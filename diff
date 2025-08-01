@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Daftar Sertifikat Lulus</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    table {
+      margin: 2rem auto;
+      border-collapse: collapse;
+      width: 95%;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background: #007bff;
+      color: white;
+    }
+    tr:hover {
+      background: #f1f1f1;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Daftar Sertifikat Lulus Pelatihan DDT</h1>
+  <table id="sertifikatTable">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>NRP</th>
+        <th>Perusahaan</th>
+        <th>Nilai</th>
+        <th>Link Sertifikat</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    const SHEET_ID = '1itlictRi-R3fpaYvM1kW8Wkg5E84kJPtVvxSLu8E2lU'; // Ganti dengan Spreadsheet ID kamu
+    const SHEET_NAME = 'Form Responses 1'; // Ganti jika nama sheet-nya beda
+
+    const API_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_NAME}`;
+
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector("#sertifikatTable tbody");
+        let no = 1;
+        data.forEach(row => {
+          if (Number(row['NILAI']) >= 80 && row['LINK']) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${no++}</td>
+              <td>${row['NAMA'] || '-'}</td>
+              <td>${row['NRP'] || '-'}</td>
+              <td>${row['PERUSAHAAN'] || '-'}</td>
+              <td>${row['NILAI']}</td>
+              <td><a href="${row['LINK']}" target="_blank">Lihat Sertifikat</a></td>
+            `;
+            tbody.appendChild(tr);
+          }
+        });
+      });
+  </script>
+</body>
+</html>
+Upload halaman sertifikat
+
