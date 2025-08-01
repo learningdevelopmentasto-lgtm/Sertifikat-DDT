@@ -55,30 +55,30 @@
   </table>
 
   <script>
-    const SHEET_ID = 'https://docs.google.com/spreadsheets/d/1itlictRi-R3fpaYvM1kW8Wkg5E84kJPtVvxSLu8E2lU/edit?resourcekey=&gid=349455929#gid=349455929'; // ID spreadsheet kamu
-    const SHEET_NAME = 'Form Responses 1'; // Nama sheet di spreadsheet kamu
+    const JSON_URL = 'https://drive.google.com/uc?export=download&id=ID_FILE_JSON_KAMU'; // Ganti ID-nya
 
-    const API_URL = `https://opensheet.elk.sh/${SHEET_ID}/${SHEET_NAME}`;
-
-    fetch(API_URL)
+    fetch(JSON_URL)
       .then(res => res.json())
       .then(data => {
         const tbody = document.querySelector("#sertifikatTable tbody");
         let no = 1;
-        data.forEach(row => {
-          if (Number(row['NILAI']) >= 80 && row['LINK']) {
+        data.forEach(item => {
+          if (item.status === "Lulus" && item.link) {
             const tr = document.createElement('tr');
             tr.innerHTML = `
               <td>${no++}</td>
-              <td>${row['NAMA'] || '-'}</td>
-              <td>${row['NRP'] || '-'}</td>
-              <td>${row['PERUSAHAAN'] || '-'}</td>
-              <td>${row['NILAI']}</td>
-              <td><a href="${row['LINK']}" target="_blank">Lihat Sertifikat</a></td>
+              <td>${item.nama}</td>
+              <td>${item.nrp}</td>
+              <td>${item.perusahaan}</td>
+              <td>${item.nilai}</td>
+              <td><a href="${item.link}" target="_blank">Lihat Sertifikat</a></td>
             `;
             tbody.appendChild(tr);
           }
         });
+      })
+      .catch(err => {
+        console.error("Gagal memuat data:", err);
       });
   </script>
 </body>
