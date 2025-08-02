@@ -55,10 +55,14 @@
   </table>
 
   <script>
-    const JSON_URL = 'https://drive.google.com/uc?export=download&id=1ISqp9lL4fX_8jdrE00BY9OIsLQg9y9Rg'; // Ganti ID-nya
+    // Ganti URL berikut sesuai dengan nama username dan repo GitHub kamu
+    const JSON_URL = 'https://github.com/learningdevelopmentasto-lgtm/Sertifikat-DDT/edit/main/index.html;
 
     fetch(JSON_URL)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Gagal mengunduh file JSON');
+        return res.json();
+      })
       .then(data => {
         const tbody = document.querySelector("#sertifikatTable tbody");
         let no = 1;
@@ -79,6 +83,10 @@
       })
       .catch(err => {
         console.error("Gagal memuat data:", err);
+        const tbody = document.querySelector("#sertifikatTable tbody");
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="6" style="text-align:center; color:red;">Gagal memuat data sertifikat.</td>`;
+        tbody.appendChild(tr);
       });
   </script>
 </body>
