@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Daftar Sertifikat Lulus</title>
+  <title>Daftar Sertifikat Lulus Pelatihan DDT</title>
   <style>
     body {
       font-family: sans-serif;
@@ -14,80 +14,86 @@
       color: #333;
     }
     table {
-      margin: 2rem auto;
+      width: 100%;
       border-collapse: collapse;
-      width: 95%;
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-top: 2rem;
     }
     th, td {
-      padding: 12px 15px;
+      padding: 0.75rem;
       border: 1px solid #ccc;
-      text-align: left;
+      text-align: center;
     }
     th {
-      background: #007bff;
+      background-color: #0080ff;
       color: white;
     }
-    tr:hover {
-      background: #f1f1f1;
-    }
-    a {
-      color: #007bff;
-      text-decoration: none;
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
-  <h1>Daftar Sertifikat Lulus Pelatihan DDT</h1>
-  <table id="sertifikatTable">
-    <thead>
-      <tr>
-        <th>No</th>
-        <th>Nama</th>
-        <th>NRP</th>
-        <th>Perusahaan</th>
-        <th>Nilai</th>
-        <th>Link Sertifikat</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
 
-  <script>
-    // Ganti URL berikut sesuai dengan nama username dan repo GitHub kamu
-    const JSON_URL = 'https://learningdevelopmentasto-lgtm.github.io/Sertifikat-DDT/';
+<h1>Daftar Sertifikat Lulus Pelatihan DDT</h1>
+<table id="sertifikatTable">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Nama</th>
+      <th>NRP</th>
+      <th>Perusahaan</th>
+      <th>Nilai</th>
+      <th>Link Sertifikat</th>
+    </tr>
+  </thead>
+  <tbody id="tableBody"></tbody>
+</table>
 
-    fetch(JSON_URL)
-      .then(res => {
-        if (!res.ok) throw new Error('Gagal mengunduh file JSON');
-        return res.json();
-      })
-      .then(data => {
-        const tbody = document.querySelector("#sertifikatTable tbody");
-        let no = 1;
-        data.forEach(item => {
-          if (item.status === "Lulus" && item.link) {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-              <td>${no++}</td>
-              <td>${item.nama}</td>
-              <td>${item.nrp}</td>
-              <td>${item.perusahaan}</td>
-              <td>${item.nilai}</td>
-              <td><a href="${item.link}" target="_blank">Lihat Sertifikat</a></td>
-            `;
-            tbody.appendChild(tr);
-          }
-        });
-      })
-      .catch(err => {
-        console.error("Gagal memuat data:", err);
-        const tbody = document.querySelector("#sertifikatTable tbody");
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td colspan="6" style="text-align:center; color:red;">Gagal memuat data sertifikat.</td>`;
-        tbody.appendChild(tr);
+<div class="error" id="errorMessage"></div>
+
+<script>
+  // Ganti ID ini dengan ID file JSON kamu di Google Drive
+  const fileId = "1ISqp9lL4fX_8jdrE00BY9OIsLQg9y9Rg"; // <== GANTI DENGAN ID ASLI
+  const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const tbody = document.getElementById("tableBody");
+      let no = 1;
+      let found = false;
+
+      data.forEach(peserta => {
+        if (peserta.status === "Lulus") {
+          found = true;
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${no++}</td>
+            <td>${peserta.nama}</td>
+            <td>${peserta.nrp}</td>
+            <td>${peserta.perusahaan}</td>
+            <td>${peserta.nilai ?? "-"}</td>
+            <td>${
+              peserta.link
+                ? `<a href="${peserta.link}" target="_blank">Lihat Sertifikat</a>`
+                : "Belum tersedia"
+            }</td>
+          `;
+          tbody.appendChild(row);
+        }
       });
-  </script>
+
+      if (!found) {
+        document.getElementById("errorMessage").textContent = "Belum ada data sertifikat yang tersedia.";
+      }
+    })
+    .catch(error => {
+      document.getElementById("errorMessage").textContent = "Gagal memuat data sertifikat.";
+      console.error(error);
+    });
+</script>
+
 </body>
 </html>
