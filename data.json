@@ -1,5 +1,10 @@
-{
-  "message": "Contoh data",
-  "status": "OK",
-  "timestamp": "2025-08-08T02:34:38.980Z"
-}
+[
+  {
+    "nama": "Akhmad Mubasir",
+    "nrp": "KL22246",
+    "perusahaan": "PT.KPP",
+    "nilai": 83,
+    "status": "Lulus",
+    "link": "https://docs.google.com/document/d/1Ck9jEosR4t3UGcI-3EAJ7hjBEqFxSgAuORsYXqG5Fug/edit?usp=drivesdk"
+  }
+]
