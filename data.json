@@ -1,5 +1,10 @@
-{
-  "message": "Contoh data",
-  "status": "OK",
-  "timestamp": "2025-08-13T01:57:03.237Z"
-}
+[
+  {
+    "nama": "MULYATULHASAN",
+    "nrp": "KT16023",
+    "perusahaan": "PT.KPP",
+    "nilai": 81,
+    "status": "Lulus",
+    "link": "https://docs.google.com/document/d/1_y2Y2EiZAVOOo5YNqlJ943OlqrXj3_fmDZVNaeJMtu8/edit?usp=drivesdk"
+  }
+]
